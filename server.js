@@ -25,14 +25,16 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.get("/api/timestamp/", function (req,res) {
-  var obj = url.parse(req.url, true);
-  var path = obj.pathname;
-  var query = obj.query.iso;
-  var date = new Date(query*1000).toISOString();
-  res.json({"unix": query, 'das': date});
+app.get("/api/timestamp/:str", function (req,res) {
+  var regex = /\d{10,11}/g;
+  if(regex.test(req.params.str)) var date = new Date(req.params.str*1000);
+  else {
+    var date = new Date(req.params.str);
+  }
+  console.log('success')
+  res.json({"unix": date.getTime()/1000, 'ISO': date});
   
-  console.log(path);
+  
 });
 
 
